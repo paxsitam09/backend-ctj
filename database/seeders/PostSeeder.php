@@ -27,7 +27,10 @@ class PostSeeder extends Seeder
                     $likes[] = new Like(['user_id' => rand(1, $maxUser)]);
                 }
 
-                $post->tags()->saveMany(Tag::factory()->count(4)->make());
+                // Create 4 tags and attach them to the post
+                $tags = Tag::factory()->count(4)->create();
+                $post->tags()->attach($tags->pluck('id')->toArray());
+                
                 $post->likes()->saveMany($likes);
             });
     }
